@@ -289,7 +289,7 @@
 \end{equation}
 
 Рассмотрим его на примере из задания 3(c):
-\begin{equation}
+\begin{equation}\label{eq:gen2}
 	g(k) = e^{-5kT}\sin(6kT+2.5) + 0.03kT
 \end{equation}
 Непрерывным аналогом данного сигнала является: $g_c=e^{-5t}\sin(6t+2.5) + 0.03t$. Непрерывная система с такими модами может быть получена следующим образом:
@@ -359,7 +359,7 @@
 , где $z_j$ --- корни характеристического полинома $F$. Положив все корни вещественными (и не кратными), можно заметить, что если $\forall z_j: |z_j| < 1$, то выполнено условие \ref{eq:asym} и система асимптотически устойчива. Если модуль хотя бы одного корня $>1$ --- система неустойчива.
 \section{Экспериментальная часть}
 \subsection{Исследнование влияния дискретного элемента на непрерывную систему}
-Соберем схему согласно заданию:
+Соберем схему согласно заданию ($T=0.2, K_{CO}=5.7$):
 \begin{figure}
     [H]
     \centering
@@ -389,12 +389,6 @@
     [H]
     \centering
     \includegraphics[width=350pt]{images/task1_d__max_state.png}
-    \caption{Максимальная колебательность $K_{FE}=0.877$.}
-\end{figure}
-\begin{figure}
-    [H]
-    \centering
-    \includegraphics[width=350pt]{images/task1_d__max_state.png}
     \caption{Максимальная колебательность $K_{FE}=1.754$.}
 \end{figure}
 \begin{figure}
@@ -407,8 +401,121 @@
     [H]
     \centering
     \includegraphics[width=350pt]{images/task1_e__optim_state.png}
-    \caption{Оптимальное время переходного процесса $K_{FE}=0.877$.}
+    \caption{Оптимальное время переходного процесса ($T$) $K_{FE}=0.877$.}
 \end{figure}
+
+\subsection{Исследование устойчивости дискретных систем}
+Рассмотрим непрерывную систему $\ddot{y} = u$:
+\begin{equation}
+	\begin{cases}
+		\begin{bmatrix}
+			\dot{x}_1 \\ \dot{x}_2
+		\end{bmatrix} = 
+		\begin{bmatrix}
+			0 & 1 \\ 0 & 0
+		\end{bmatrix}
+		\begin{bmatrix}
+			x_1 \\ x_2
+		\end{bmatrix} + 
+		\begin{bmatrix}
+			0 \\ 1
+		\end{bmatrix}u \\
+		y = \begin{bmatrix}
+			1 & 0
+		\end{bmatrix} \begin{bmatrix}
+			x_1 \\ x_2
+		\end{bmatrix}
+	\end{cases}
+	\implies
+	\begin{cases}
+		\dot{x}=A_cx + B_cu \\
+		y = Cx
+	\end{cases}
+\end{equation}
+
+Воспользуемся выражениями \ref{eq:discr_sys} для дискретизации системы ($T=0.2$):
+\begin{equation}
+	\begin{cases}
+		x(m+1) = Ax(m) + Bu(m)\\
+		y(m) = Cx(m)
+	\end{cases}, A = \begin{bmatrix}
+		1 & 0.2 \\
+		0 & 1
+	\end{bmatrix}, B = \begin{bmatrix}
+		0.02 \\ 0.2
+	\end{bmatrix}
+\end{equation}
+
+Задавшись сигналом управления $u = -Kx$, можем добиться требуемых собственных чисел матрицы динамики системы $F = A-BK= \\=\begin{bmatrix}
+	1 - 0.02k_1 & 0.2 - 0.02k_2 \\ -0.2k_1 & 1 -0.2k_2
+\end{bmatrix}$ (модальный регулятор).
+
+Для всех предложенных наборов корней выполнено условие $|z_i| < 1$ и все системы являются устойчивыми (что согласуется с корневым критерием, и также демонстрирует его применимость с комплексными корнями). 
+
+Схема моделирования:
+\begin{figure}
+    [H]
+    \centering
+    \includegraphics[width=350pt]{images/scheme_2.png}
+    \caption{Схема 2.}
+\end{figure}
+
+Результаты моделирования представлены ниже:
+\begin{figure}
+    [H]
+    \centering
+    \includegraphics[width=350pt]{images/task2_d__1_state.png}
+    \caption{Результат моделирования замкнутой системы ($z_1=0.9, z_2=0.1$).}
+\end{figure}
+\begin{figure}
+    [H]
+    \centering
+    \includegraphics[width=350pt]{images/task2_d__2_state.png}
+    \caption{Результат моделирования замкнутой системы ($z_1=-0.1, z_2=-0.8$).}
+\end{figure}
+\begin{figure}
+    [H]
+    \centering
+    \includegraphics[width=350pt]{images/task2_d__3_state.png}
+    \caption{Результат моделирования замкнутой системы ($z_1=0.2, z_2=0$).}
+\end{figure}
+\begin{figure}
+    [H]
+    \centering
+    \includegraphics[width=350pt]{images/task2_d__4_state.png}
+    \caption{Результат моделирования замкнутой системы ($z_1=0.8i, z_2=-0.8i$).}
+\end{figure}
+\begin{figure}
+    [H]
+    \centering
+    \includegraphics[width=350pt]{images/task2_d__5_state.png}
+    \caption{Результат моделирования замкнутой системы ($z_1=-0.2+0.9i, z_2=-0.2-0.9i$).}
+\end{figure}
+
+\subsection{Построение дискретных командных генераторов}
+Синтез требуемых командных генераторов приведен в качестве примеров в теоретической части (\ref{eq:gen1_sys} и \ref{eq:gen2_sys}). Построим схему для моделирования:
+\begin{figure}
+    [H]
+    \centering
+    \includegraphics[width=350pt]{images/scheme_3.png}
+    \caption{Схема 3.}
+\end{figure}
+
+Проведем моделирование, сравнив сигнал с непрерывным аналогом:
+\begin{figure}
+    [H]
+    \centering
+    \includegraphics[width=350pt]{images/task3_state_1.png}
+    \caption{Командный генератор гармонического сигнала \ref{eq:gen1}.}
+\end{figure}
+\begin{figure}
+    [H]
+    \centering
+    \includegraphics[width=350pt]{images/task3_state_2.png}
+    \caption{Командный генератор сигнала \ref{eq:gen2}.}
+\end{figure}
+
 \section{Выводы}
+В ходе выполнения работы ознакомились с принципом синтеза дискретных систем, анализом устойчивости, а также управления ими. Теоретические выкладки, сделанные в соответствующей секции были подтверждены во время про ведения экспериментов, что можно наблюдать на графиках моделирования.
 
 \end{document}
