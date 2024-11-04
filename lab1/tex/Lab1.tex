@@ -200,7 +200,7 @@
 	\end{cases}.
 \end{equation}
 
-Рассмотим значения системы \ref{eq:zoh_cont} в дискретные моменты времени $t = Tm$. Запишем решение ОДУ в виде свертки:
+Рассмотрим значения системы \ref{eq:zoh_cont} в дискретные моменты времени $t = Tm$. Запишем решение ОДУ в виде свертки:
 \begin{equation*}
 	x((m+1)T) = e^{A_cT}x(mT) + \int\limits_{mT}^{(m+1)T}e^{A_c((m+1)T-\theta)}B_c\varepsilon(\theta)d\theta
 \end{equation*}
@@ -288,8 +288,127 @@
 	\end{cases}
 \end{equation}
 
-\section{Экспериментальная часть}
+Рассмотрим его на примере из задания 3(c):
+\begin{equation}
+	g(k) = e^{-5kT}\sin(6kT+2.5) + 0.03kT
+\end{equation}
+Непрерывным аналогом данного сигнала является: $g_c=e^{-5t}\sin(6t+2.5) + 0.03t$. Непрерывная система с такими модами может быть получена следующим образом:
+\begin{equation}
+	\begin{cases}
+		\dot{\xi}_c = \begin{bmatrix}
+			-5 & 6 & 0 & 0 \\ -6 & -5 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0
+		\end{bmatrix}\xi_c \\
+		g_c = \begin{bmatrix}
+			1 & 0 & 0.03 & 0
+		\end{bmatrix}\xi_c\\
+		\xi_c(0) = \begin{bmatrix}
+			\sin(2.5) & \cos(2.5) & 0 & 1
+		\end{bmatrix}^T
+	\end{cases}
+\end{equation}
 
+Дискретизовав систему изложенным выше образом (\ref{eq:discr_sys}), можем задать дискретную систему в виде:
+\begin{equation} \label{eq:gen2_sys}
+	\begin{cases}
+		\xi(k+1) = \Gamma\xi, \Gamma=\begin{bmatrix}
+			0.02027 & 0.2858 & 0 & 0 \\ -0.2858 & 0.02027 & 0 & 0 \\ 0 & 0 & 1 & 0.25 \\ 0 & 0 & 0 & 1
+		\end{bmatrix} \\
+		g(k) = H\xi, H = \begin{bmatrix}
+			1 & 0 & 0.03 & 0
+		\end{bmatrix} \\
+		\xi(0) = \begin{bmatrix}
+			\sin(2.5) & \cos(2.5) & 0 & 1
+		\end{bmatrix}^T
+	\end{cases}
+\end{equation}
+
+\subsection{Устойчивость дискретных систем}
+Рассмотрим дискретную систему вида:
+\begin{equation}
+	x(m+1) = F(x(m))
+\end{equation}
+где $x$ --- $n$-мерный вектор состояния, $F$ --- $n$-мерная нелинейная векторнозначная функция векторного аргумента такая, что при $x = 0$ $F (0) = 0$, и решение
+исходного разностного уравнения при произвольных начальных условиях единственно.
+
+Будем называть систему асимптотически устойчивой, если:
+\begin{equation}\label{eq:asym}
+	\lim\limits_{m\to\infty}\|x(m)\|=0
+\end{equation}
+
+Будем называть систему экспоненциально устойчивой, если:
+\begin{equation}
+	\|x(m)\|\le \beta\alpha^m\|x(0)\|, \forall m \in \mathbb{Z}_+
+\end{equation}
+
+Для линейных систем применим корневой критерий устойчивости. Рассмотрим класс ситем вида:
+\begin{equation*}
+	x(m+1) = Fx(m)
+\end{equation*}
+Перейдем в базис (матрицей перехода $M$), в котором матрица $F_g = M^{-1}FM$ --- диагональна (предположим, что такой существует):
+\begin{equation}
+	x = M\xi, \xi(m+1) = F_g\xi(m)
+\end{equation}
+Тогда можем записать:
+\begin{equation*}
+	x(m)=M\xi(m)=MF_g^m\xi(0)
+\end{equation*}
+, что эквивалентно:
+\begin{equation}
+	x_i(m) = \sum\limits_{j=1}^{n}M_{ij}z_j^m\xi_j(0)
+\end{equation}
+, где $z_j$ --- корни характеристического полинома $F$. Положив все корни вещественными (и не кратными), можно заметить, что если $\forall z_j: |z_j| < 1$, то выполнено условие \ref{eq:asym} и система асимптотически устойчива. Если модуль хотя бы одного корня $>1$ --- система неустойчива.
+\section{Экспериментальная часть}
+\subsection{Исследнование влияния дискретного элемента на непрерывную систему}
+Соберем схему согласно заданию:
+\begin{figure}
+    [H]
+    \centering
+    \includegraphics[width=\textwidth]{images/scheme_1.png}
+    \caption{Схема 1.}
+    \label{fig:scheme_1}
+\end{figure}
+
+Обозначим состояние системы за $x$. Очевидно, что $\dot{x}=0$ возможно только в случаях $K_{FB}=0$ или $x=1$. Первый случай соответствует нейтрольной границе устойчивости, второй --- устойчивому положению. Заметим также, что при $K_{FB}>\frac{2}{TK_{CO}}$ система теряет устойчивость (изменение переменной за период дискретизации превышает текущее расстояние до устойчивого положения в два раза, что приводит к нарастанию сигнала). При $K_{FB}=\frac{2}{TK_{CO}}=1.754$ достигается колебательная граница устойчивости.
+
+При $K_{FB}>\frac{1}{TK_{CO}}$ система приобретает колебательность с периодом равным $T$ (максимальная аммплитуда --- на колебательной границе устойчивости). При $K_{FB}<\frac{1}{TK_{CO}}$ колебания отсутсвуют (изменение сигнала за время $T$ всегда меньше текущего расстояния до устойчивого положения). При $K_{FB}=\frac{1}{TK_{CO}}=0.877$ наблюдается наискорейший переходный процесс (за конечное время $T$).
+
+Ниже приведены графики, демонстрирующие полученные свойства:
+\begin{figure}
+    [H]
+    \centering
+    \includegraphics[width=350pt]{images/task1_b__neutral_state.png}
+    \caption{Нейтральная грница устойчивости $K_{FE}=0$.}
+\end{figure}
+\begin{figure}
+    [H]
+    \centering
+    \includegraphics[width=350pt]{images/task1_b__oscill_state.png}
+    \caption{Колебательная грница устойчивости $K_{FE}=1.754$.}
+\end{figure}
+\begin{figure}
+    [H]
+    \centering
+    \includegraphics[width=350pt]{images/task1_d__max_state.png}
+    \caption{Максимальная колебательность $K_{FE}=0.877$.}
+\end{figure}
+\begin{figure}
+    [H]
+    \centering
+    \includegraphics[width=350pt]{images/task1_d__max_state.png}
+    \caption{Максимальная колебательность $K_{FE}=1.754$.}
+\end{figure}
+\begin{figure}
+    [H]
+    \centering
+    \includegraphics[width=350pt]{images/task1_d__no_state.png}
+    \caption{Отсутствие колебаний $K_{FE}<0.877$.}
+\end{figure}
+\begin{figure}
+    [H]
+    \centering
+    \includegraphics[width=350pt]{images/task1_e__optim_state.png}
+    \caption{Оптимальное время переходного процесса $K_{FE}=0.877$.}
+\end{figure}
 \section{Выводы}
 
 \end{document}
