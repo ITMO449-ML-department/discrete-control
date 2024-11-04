@@ -176,13 +176,117 @@
 
 % \includepdf[pages={33}, scale=1,addtotoc={1, section, 1, {Текст задания}, text}]{./Tasks.pdf}
 
-\section{Цель работы и постановка задачи}
-
-\subsection{Цель работы}
-
-\subsection{Постановка задачи}
+\section{Цель работы}
+Ознакомиться с методами синтеза и анализа дискретных системам. Получить опыт построения регуляторов и генераторов внешних воздействий для дискретных систем.
 
 \section{Теоретическая часть}
+\subsection{Дискретизация}
+В ходе работы мы будем использовать модели дискретных элементов (при непрерывном изменении входной переменной выходная переменная изменяется только в
+дискретные моменты времени). В частности таким является экстраполятор нулевого порядка, задающийся уравнением \ref{eq:zoh}.
+\begin{equation}\label{eq:zoh}
+	\begin{cases}
+		x_2(t) = x_1(mT) \\
+		t = mT + \tau \\ 0\le\tau\le T
+	\end{cases}
+\end{equation}
+, где $x_1$ --- непрерывный входной сигнал, $x_2$ --- дискретный выходной сигнал, $T$ --- интервал дискретности, $m \in \mathbb{Z}_+$. Экстраполятор нулевого порядка (zero order hold, далее --- ZOH) является частным случаем импульсного элемента.
+
+Для преобразования непрерывной системы в дискретный вид рассмотрим последовательное соединение ZOH и непрерывной линейной системы (НЛС). Полученная система задается уравнениями \ref{eq:zoh_cont}.
+\begin{equation}\label{eq:zoh_cont}
+	\begin{cases}
+		\dot{x} = A_cx + B_c\varepsilon \\
+		y = Cx \\
+		\varepsilon(mT + \tau) = u(mT), 0\le\tau\le T
+	\end{cases}.
+\end{equation}
+
+Рассмотим значения системы \ref{eq:zoh_cont} в дискретные моменты времени $t = Tm$. Запишем решение ОДУ в виде свертки:
+\begin{equation*}
+	x((m+1)T) = e^{A_cT}x(mT) + \int\limits_{mT}^{(m+1)T}e^{A_c((m+1)T-\theta)}B_c\varepsilon(\theta)d\theta
+\end{equation*}
+Сделав замену $\theta=mT + \tau, 0\le\tau\le T$ и заметив, что $\varepsilon(mT + \tau) = \varepsilon(mT)$ перепишем уравнение выше:
+\begin{equation*}
+	x((m+1)T) = e^{A_cT}x(mT) + \int\limits_{0}^{T}e^{A_c(T-\tau)}d\tau B_c\varepsilon(mT)
+\end{equation*}
+Вычислим значение интеграла:
+\begin{equation*}
+	\int_0^T e^{A_c (T - \tau)} \, d\tau = e^{A_c T} \int_0^T e^{-A_c \tau} \, d\tau = e^{A_c T} A_c^{-1} \left( I - e^{-A_c T} \right) = A_c^{-1} \left( e^{A_c T} - I \right)=
+\end{equation*}
+\begin{equation*}
+	= A_c^{-1} \sum_{i=0}^{\infty} \left( \frac{A_c^i T^i}{i!} - I \right) = A_c^{-1} \left( I + \sum_{i=1}^{\infty} \frac{A_c^i T^i}{i!} - I \right) = \sum_{i=1}^{\infty} \frac{A_c^{i-1} T^i}{i!}.
+\end{equation*}
+Таким образом, подставив выражение для интеграла, можем записать:
+\begin{equation}\label{eq:discr_sys}
+	x((m+1)T) = Ax(mT) + B\varepsilon(mT)
+\end{equation}
+, где $A = e^{A_cT}=\sum\limits_{i=0}^{\infty}\frac{A_c^iT^i}{i!}$, $B = \sum\limits_{i=1}^{\infty}\frac{A_c^{i-1}T^i}{i!}B_c$.
+
+Рекурсивно подставляя выражения для $x$ в \ref{eq:discr_sys}, получим аналитическое выражение состояния дискретной системы:
+\begin{equation}
+	x(mT)=A^mx(0) + \sum\limits_{i=0}^{m-1}A^iBu(iT)
+\end{equation}
+
+\subsection{Построение линейных дискретных генераторов внешних воздействий}
+Рассмотрим построение дискретных моделей генераторов внешних возмущений $g(k)$.
+
+\textbf{Метод разностей}
+
+Основным методом построения дискретных моделей внешних возмущений является последовательное взятие разностей. Рассмотрим его на примере из задания 3(a):
+\begin{equation}\label{eq:gen1}
+	g(k) = A_g\sin(kT\omega)
+\end{equation}
+
+За первую компоненту вектора состояний возьмем сам сигнал $\xi_1(k) = g(k)$.
+
+Выразим $g(k+1)$ на основе \ref{eq:gen1}:
+\begin{equation}\label{eq:gen1_1}
+	\xi_2(k) =\xi_1(k+1)= g(k+1) = A_g\sin(kT\omega)\cos(T\omega) + A_g\sin(T\omega)\cos(kT\omega)
+\end{equation}
+Заметим, что $A_g\sin(kT\omega)\cos(T\omega) = g(k)\cos(\omega T)$.
+
+Выразим $g(k+2)$ на основе \ref{eq:gen1_1}:
+\begin{equation} \label{eq:gen1_2}
+	\xi_2(k+1)=g(k+2) = g(k+1)\cos(\omega T) + A_g\sin(T\omega)\cos((k+1)T\omega)
+\end{equation}
+Заметим:
+\begin{equation*}
+	A_g\sin(T\omega)\cos((k+1)T\omega) = A_g\sin(T\omega)(\cos(kT\omega)\cos(T\omega) - \sin(kT\omega)\sin(T\omega))
+\end{equation*}
+Подставив $A_g\sin(T\omega)\cos(kT\omega) = g(k+1)-g(k)\cos(\omega T)$ из \ref{eq:gen1_1} и выражение $g(k)$ из \ref{eq:gen1} получим:
+\begin{equation*}
+	A_g\sin(T\omega)\cos((k+1)T\omega) = g(k+1)\cos(\omega T) -g(k)\cos^2(\omega T) - g(k)\sin^2(\omega T)
+\end{equation*}
+Подставив полученный результат в \ref{eq:gen1_2}:
+\begin{equation}
+	\xi_2(k+1)= 2\cos(\omega T)\xi_2(k) - \xi_1(k)
+\end{equation}
+
+Итого, получаем дискретную модель внешнего возмущения \ref{eq:gen1}:
+\begin{equation}\label{eq:gen1_sys}
+	\begin{cases}
+		\xi(k+1) = \Gamma\xi(k), \Gamma=\begin{bmatrix}
+			0 & 1 \\ -1 & 2\cos(\omega T)
+		\end{bmatrix} \\
+		g(k) = H\xi, H = \begin{bmatrix}
+			1 & 0
+		\end{bmatrix} \\
+		\xi(0) = \begin{bmatrix}
+			0 & A_g\sin(T\omega)
+		\end{bmatrix}^T
+	\end{cases}
+\end{equation}
+
+\textbf{Непрерывный аналог}
+
+Возможно также построить непрерывный аналог модели $g_c: g_{c}(kT) = g(k)$ предполагамого генератора и дискретизировать систему согласно уравнениям \ref{eq:zoh_cont}-\ref{eq:discr_sys}:
+\begin{equation}
+	\begin{cases}
+		g_c = C_g \xi_c \\
+		\dot{\xi_c} = \Gamma_c\xi_c\\
+		\xi(k+1) = \Gamma \xi(k) \\
+		g(k) = H\xi(k) = H\Gamma^k\xi(0)
+	\end{cases}
+\end{equation}
 
 \section{Экспериментальная часть}
 
