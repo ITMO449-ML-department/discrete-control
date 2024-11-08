@@ -253,6 +253,24 @@
 \end{figure}
 
 \subsection{Проектирование дискретных следящих регуляторов}
+\subsubsection{Построение задающего воздействия}
+Для построения задающего воздействия были выбраны матрицы непрерывной системы:
+\[
+	A = \begin{bmatrix} 0 & \omega_g \\ -\omega_g & 0 \end{bmatrix}, \quad
+	B = \begin{bmatrix} 0 \\ 0 \end{bmatrix}, \quad
+	C = \begin{bmatrix} A_g & 0 \end{bmatrix}, \quad
+	D = \begin{bmatrix} 0 \end{bmatrix}, \quad
+	x(0) = \begin{bmatrix} 0 \\ 1 \end{bmatrix};
+\]
+После дискретизации был получен их дискретный вариант. Сравнение линейного и непрерывного генераторов представлен на рис. \ref{fig:task2_gen}.
+\begin{figure}
+	[H]
+	\centering
+	\includegraphics[width=350pt]{images/task2_generator.png}
+	\caption{График сравнения дискретного и непрерывного генераторов}
+	\label{fig:task2_gen}
+\end{figure}
+
 
 \newpage
 \section{Выводы}
