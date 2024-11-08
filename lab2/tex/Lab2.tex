@@ -1,0 +1,261 @@
+\documentclass[a4paper, 14pt]{extarticle}
+
+% Текст
+\usepackage[utf8]{inputenc} % UTF-8 кодировка
+\usepackage[russian]{babel} % Русский язык
+\usepackage{indentfirst} % красная строка в первом параграфе в главе
+% Отображение страниц
+\usepackage{geometry} % размеры листа и отступов
+% \usepackage{mathabx}
+\geometry{
+	left=30mm,
+	top=20mm,
+	right=15mm,
+	bottom=25mm,
+	marginparsep=0mm,
+	marginparwidth=0mm,
+	headheight=10mm,
+	headsep=7mm,
+	foot=0mm}
+\usepackage{afterpage,fancyhdr} % настройка колонтитулов
+
+\setlength{\baselineskip}{1.5em}
+\usepackage{titlesec}
+\renewcommand{\thesection}{}
+\renewcommand{\thesubsection}{\arabic{subsection}}
+\titleformat{\section}[block]{\centering\bfseries\Large}{}{5pt}{}
+\titleformat{\subsection}[block]{\bfseries\large}{}{5pt}{}
+
+\pagestyle{fancy}
+\fancypagestyle{style}{ % создание нового стиля style
+	\fancyhf{} % очистка колонтитулов
+    \fancyhead[LO, RE]{\nouppercase{ДСУ}} % название документа наверху
+    \fancyhead[RO, LE]{\nouppercase{\leftmark}} % название section наверху
+	\fancyfoot[C]{\thepage} % номер страницы справа внизу на нечетных и слева внизу на четных
+	\renewcommand{\headrulewidth}{0.25pt} % толщина линии сверху
+	\renewcommand{\footrulewidth}{0pt} % толцина линии снизу
+}
+\fancypagestyle{plain}{ % создание нового стиля plain -- полностью пустого
+	\fancyhf{}
+	\renewcommand{\headrulewidth}{0pt}
+}
+\fancypagestyle{title}{ % создание нового стиля title -- для титульной страницы
+	\fancyhf{}
+	\fancyhead[C]{{\footnotesize
+			Министерство образования и науки Российской Федерации\\
+			Федеральное государственное автономное образовательное учреждение высшего образования
+	}}
+	\fancyfoot[C]{{\large 
+			Санкт-Петербург\\ 2024
+	}}
+	\renewcommand{\headrulewidth}{0pt}
+}
+
+% Математика
+\usepackage{amsmath, amsfonts, amssymb, amsthm} % Набор пакетов для математических текстов
+\usepackage{cancel} % зачеркивание для сокращений
+% Рисунки и фигуры
+\usepackage{graphicx} % вставка рисунков
+\usepackage{epstopdf}
+\usepackage{wrapfig, subcaption} % вставка фигур, обтекая текст
+\usepackage{caption} % для настройки подписей
+\captionsetup{figurewithin=none,labelsep=period, font={small,it}} % настройка подписей к рисункам
+% Рисование
+\usepackage{tikz} % рисование
+\usepackage{circuitikz}
+\usepackage{pgfplots} % графики
+\usepgfplotslibrary{fillbetween}
+% Таблицы
+\usepackage{multirow} % объединение строк
+\usepackage{multicol} % объединение столбцов
+% Остальное
+\usepackage[unicode, pdftex]{hyperref} % гиперссылки
+\usepackage{enumitem} % нормальное оформление списков
+\usepackage{float}
+
+\setlist{itemsep=0.15cm,topsep=0.15cm,parsep=1pt} % настройки списков
+% Теоремы, леммы, определения...
+\theoremstyle{definition}
+\newtheorem{Def}{Определение}
+\newtheorem*{Axiom}{Аксиома}
+\theoremstyle{plain}
+\newtheorem{Th}{Теорема}
+\newtheorem{Task}{Задание}
+\newtheorem{Lem}{Лемма}
+\newtheorem{Cor}{Следствие}
+\newtheorem{Ex}{Пример}
+\theoremstyle{remark}
+\newtheorem*{Note}{Замечание}
+\newtheorem*{Solution}{Решение}
+\newtheorem*{Proof}{Доказательство}
+% Свои команды
+\newcommand{\comb}[1]{\left[\hspace{-4pt}\begin{array}{l}#1\end{array}\right.\hspace{-5pt} } % совокупность уравнений
+\newcommand{\rank}{\mathrm{rank}\;}
+% Титульный лист
+
+\usepackage{listings}
+\newcommand*{\titlePage}{
+	\thispagestyle{title}
+	\begingroup
+	\begin{center}
+		%		{\footnotesize
+			%			Министерство образования и науки Российской Федерации\\
+			%			Федеральное государственное автономное образовательное учреждение высшего образования
+			%		}
+		%		
+		\vspace*{3ex}
+		{\small
+			САНКТ-ПЕТЕРБУРГСКИЙ НАЦИОНАЛЬНЫЙ ИССЛЕДОВАТЕЛЬСКИЙ УНИВЕРСИТЕТ ИНФОРМАЦИОННЫХ ТЕХНОЛОГИЙ, МЕХАНИКИ И ОПТИКИ	
+		}
+		
+		\vspace*{2ex}
+		
+		{\normalsize
+			Факультет систем управления и робототехники
+		}
+		
+		\vspace*{15ex}
+		
+		{
+			Отчёт по лабораторной работе №2\\
+			<<Классические регуляторы для дискретных систем>>\\
+			по дисциплине\\
+			<<Дискретные системы управления>>\\
+				% \vspace{2em}
+				Вариант 9
+			
+		}
+		
+	\end{center}
+	\vspace*{10ex}
+	\begin{flushright}
+		{\large 
+			\underline{Выполнили}: студенты потока 1.2 \\
+			\begin{flushright}
+				\textbf{Дюжев В. Д.}\\
+				\textbf{Лалаянц К. А.}\\
+			\end{flushright}
+		}
+		\vspace*{5ex}
+		{\large 
+			\underline{Преподаватель}:\\ 
+			\begin{flushright}
+            \textit{Краснов А.Ю.}
+			\end{flushright}
+		}
+	\end{flushright}	
+	\newpage
+	\setcounter{page}{1}
+	\endgroup}
+%\usepackage{newtxmath,newtxtext}
+%\lstset{literate={а}{\cyra}1{б}{\cyrb}1{в}{\cyrv}1{г}{\cyrg}1{д}{\cyrd}1{е}{\cyre}1{ж}{\cyrzh}1{з}{\cyrz}1{и}{\cyri}1{к}{\cyrk}1{л}{\cyrl}1{м}{\cyrm}1{н}{\cyrn}1{о}{\cyro}1{п}{\cyrp}1{р}{\cyrr}1{с}{\cyrs}1{т}{\cyrt}1{у}{\cyru}1{ф}{\cyrf}1{х}{h}1{ц}{w}1{ч}{\cyrch}1{ш}{\cyrsh}1{щ}{\cyrshch}1{ь}{m}1{ъ}{m}1{ы}{y}1{э}{e}1{ю}{\cyryu}1{я}{\cyrya}}
+
+\lstset{basicstyle=\small}
+\newcommand{\tasknum}[3]{Task}%\textunderscore{#1}\textunderscore{#2}y\textunderscore{#2}\textunderscore{#3}}
+\usepackage{pdfpages}
+
+\newcommand{\mat}[1]{\begin{pmatrix}#1\end{pmatrix}} 
+\newcommand{\bmat}[1]{\begin{bmatrix}#1\end{bmatrix}} 
+
+\newcommand{\code}[2]
+{
+\begin{minipage}{0.45\textwidth}
+    \textbf{Code:}
+    #1
+\end{minipage}
+}
+
+\begin{document}
+\renewcommand{\contentsname}{\hfillОГЛАВЛЕНИЕ\hfill} 
+\titlePage
+\thispagestyle{plain}
+\tableofcontents
+\pagestyle{style}
+
+\newpage
+\setcounter{page}{1}
+
+% \includepdf[pages={33}, scale=1,addtotoc={1, section, 1, {Текст задания}, text}]{./Tasks.pdf}
+
+\section{Введение}
+\subsection{Цель работы}
+Ознакомиться с методами синтеза классических регуляторов для дискретных систем.
+
+\subsection{Данные варианта}
+\begin{itemize}
+	\item Тип ОУ: 2 (рис. \ref{fig:plant_type});
+	\begin{figure}
+	    [H]
+	    \centering
+	    \includegraphics[width=350pt]{images/plant_type.png}
+	    \caption{Тип ОУ}
+		\label{fig:plant_type}
+	\end{figure}
+	\item $k_1$: 7.29
+    \item $a^1_0$: 1
+    \item $T_1$: 0.38
+    \item $\xi$: 0
+    \item $k_2$: 9.46
+    \item $a_0^2$: 1
+    \item $T_2$: 1
+    \item $T$: 0.25
+    \item $g(k) = 7.68 \sin{(0.3kT)}$
+\end{itemize}
+\newpage
+
+\section{Основная часть}
+\subsection{Проектирование дискретных стабилизирующих регуляторов}
+Дискретный вариант имеет вид:
+\[
+	A = \begin{bmatrix} 0.3581 & -0.2104 \\ 0.3198 & 0.9387 \end{bmatrix}, \quad
+	B = \begin{bmatrix} 1.279 \\ 0.3728 \end{bmatrix}, \quad
+	C = \begin{bmatrix} 0 & 11.34 \end{bmatrix}, \quad
+	D = \begin{bmatrix} 0 \end{bmatrix}
+\]
+и имеет cобственные числа 0.5179 и 0.7788.
+
+В качестве эталонной модели возьмем оптимальную по быстродействию дискретную систему, т.е. \(z_i^* = 0,~i=\overline{1,n}\).
+Тогда введем эталонную модель:
+\[
+	\begin{cases}
+		\eta(m+1) = \Gamma \eta(m) \\
+		\nu(m) = -H \eta(m)
+	\end{cases}
+\]
+\[
+	\Gamma = \begin{bmatrix} 0 & 1 \\ 0 & 0 \end{bmatrix}, \quad
+	H = \begin{bmatrix} 1 & 1 \end{bmatrix}, \quad
+\]
+
+Известно, что \(F = A - BK\) и \(\Gamma\) подобны. Следовательно \(F = M \Gamma M^{-1}\). Для получения дополнительного матричного уравнения потребуем, чтобы выход эталонной модели совпадал бы с желаемым управляемым воздействием.
+Из этого:
+\[
+	\begin{cases}
+		AM - M \Gamma = BH \\
+		K = HM^{-1}
+	\end{cases} \rightarrow
+	\begin{cases}
+		K = [0.6122~~1.3780]\\
+		A - BK = \begin{bmatrix}
+			-0.4250 & -1.9729 \\
+			0.0915 & 0.4250
+			\end{bmatrix} \\
+		\sigma(A - BK) = [-0.54 ~ 0.54]*10^{-8}
+	\end{cases} 
+\]
+Видно, что из-за неточности численного решения уравнения Сильвестра в Matlab, собственные числа незначительно отличаются от 0. Это повышает время сходимости, которое должно было быть равным одному периоду дискретизации благодаря 0 собственным числам. Результаты представлены на рис. \ref{fig:task1}.
+\begin{figure}
+	[H]
+	\centering
+	\includegraphics[width=350pt]{images/task1.png}
+	\caption{График состояния объекта при использовании модального регулятора.}
+	\label{fig:task1}
+\end{figure}
+
+\subsection{Проектирование дискретных следящих регуляторов}
+
+\newpage
+\section{Выводы}
+В ходе выполнения работы ознакомились с принципом синтеза дискретных систем, анализом устойчивости, а также управления ими. Теоретические выкладки, сделанные в соответствующей секции были подтверждены во время про ведения экспериментов, что можно наблюдать на графиках моделирования.
+
+\end{document}
