@@ -260,15 +260,26 @@
 
 \subsection{Проектирование дискретных следящих регуляторов}
 \subsubsection{Построение задающего воздействия}
+Известно, что задающее воздействие имеет вид:
+\[
+\begin{cases}
+	\xi(m+1) = \Gamma \xi(m)\\
+	g(m) = H_\xi \xi(m)
+\end{cases}
+\]
 Для построения задающего воздействия были выбраны матрицы непрерывной системы:
 \[
-	A = \begin{bmatrix} 0 & \omega_g \\ -\omega_g & 0 \end{bmatrix}, \quad
-	B = \begin{bmatrix} 0 \\ 0 \end{bmatrix}, \quad
-	C = \begin{bmatrix} A_g & 0 \end{bmatrix}, \quad
-	D = \begin{bmatrix} 0 \end{bmatrix}, \quad
-	x(0) = \begin{bmatrix} 0 \\ 1 \end{bmatrix};
+	\Gamma_c = \begin{bmatrix} 0 & 0.3 \\ -0.3 & 0 \end{bmatrix}, \quad
+	H_{\xi c} = \begin{bmatrix} 7.68 & 0 \end{bmatrix}, \quad
+	\xi(0) = \begin{bmatrix} 0 \\ 1 \end{bmatrix};
 \]
-После дискретизации был получен их дискретный вариант. Сравнение линейного и непрерывного генераторов представлен на рис. \ref{fig:task2_gen}.
+После дискретизации был получен их дискретный вариант:
+\[
+    \Gamma = \begin{bmatrix} 0.9972 & 0.07493 \\ -0.07493 & 0.9972 \end{bmatrix}, \quad
+    H_\xi = \begin{bmatrix} 7.68 & 0 \end{bmatrix}, \quad
+	\xi(0) = \begin{bmatrix} 0 \\ 1 \end{bmatrix};
+\]
+Сравнение линейного и непрерывного генераторов представлен на рис. \ref{fig:task2_gen}.
 \begin{figure}
 	[H]
 	\centering
@@ -277,7 +288,103 @@
 	\label{fig:task2_gen}
 \end{figure}
 \subsubsection{Синтез регулятора со встроенной моделью}
+В дискретном случае:
+\[g(m) = H_\xi \Gamma^m \xi(0)\]
 
+Представим объект управления в канонической наблюдаемой форме:
+\[
+    A = \begin{bmatrix} 0 & 1 \\ -0.4034 & 1.297 \end{bmatrix}, \quad
+    B = \begin{bmatrix} 4.229 \\ 8.608 \end{bmatrix}, \quad
+    C = \begin{bmatrix} 1 & 0 \end{bmatrix}, \quad
+    D = \begin{bmatrix} 0 \end{bmatrix};
+\]
+При условии, что (A, B) -- полностью управляема, а (С, А) -- полностью наблюдаема, синтезируем регулятор:
+\[
+\begin{cases}
+	e = g - y\\
+	\eta(m+1) = \Gamma \eta(m) + B_\eta e() \\
+	u(m) = k_1 e(m) + K_\eta \eta(m) - k_2 x_2(m) - \dots - k_n x_n(m)
+\end{cases}
+\]
+\(B_\eta\) выбирается из условия полной управляемости пары \((\Gamma, B_\eta)\). Сведем задачу к модальному управлению:
+\[u(m) = k_1 g(m) + K_\eta \eta(m) - K x(m) = k\]
+
+Введем в рассмотрение расширенную модель ОУ, объединив уравнение движения объекта с уравнением встроенной модели:
+
+\[
+\bar{x}(m + 1) = 
+\begin{bmatrix}
+\eta(m + 1) \\ x(m + 1)
+\end{bmatrix}
+= 
+\begin{bmatrix}
+\Gamma & -B_\eta C \\
+0 & A 
+\end{bmatrix}
+\begin{bmatrix}
+\eta(m) \\ x(m)
+\end{bmatrix}
++ 
+\begin{bmatrix}
+0 \\ B 
+\end{bmatrix} u(m)
++ 
+\begin{bmatrix}
+B_\eta \\ 0 
+\end{bmatrix} g(m)
+\]
+
+Тогда, с учетом обозначений:
+\[
+\bar{A} = \begin{bmatrix} \Gamma & -B_\eta C \\ 0 & A \end{bmatrix}, \quad
+\bar{B} = \begin{bmatrix} 0 \\ B \end{bmatrix}, \quad
+\bar{B}_1 = \begin{bmatrix} B_\eta \\ 0 \end{bmatrix}, \quad
+\bar{K} = \begin{bmatrix} -K_\eta & K \end{bmatrix}
+\]
+
+получим в итоге для замкнутой системы:
+\[
+\bar{x}(m + 1) = (\bar{A} - \bar{B} \bar{K}) \bar{x}(m) + (\bar{B}_1 + k_1 \bar{B}) g(m) = \bar{F} x(m) + \bar{B}_g g(m),
+\]
+
+где \(\bar{F} = \bar{A} - \bar{B} \bar{K}\) — матрица размерности \((n + q) \times (n + q)\), определяющая динамические свойства замкнутой системы; \(\bar{B}_g = \bar{B}_1 + k_1 \bar{B}\) — матрица входов по задающему воздействию размерности \((n + q) \times 1\).
+
+Если пара \(A, B\) полностью управляема, то выбором матрицы \(\bar{K}\) можно обеспечить произвольные желаемые корни характеристического полинома или коэффициенты уравнения замкнутой системы. Отметим, что пара \(\bar{A}, \bar{B}\) будет полностью управляема при выполнении следующих условий:
+
+\begin{itemize}
+    \item пара \(A, B\) полностью управляема, а пара \(C, A\) полностью наблюдаема;
+    \item пара \(\Gamma, B_\eta\) полностью управляема.
+\end{itemize}
+
+Итого получаем
+\[
+\bar A =
+	\begin{bmatrix}
+	0.9972 & 0.0749 & -1.0000 & 0 \\
+	-0.0749 & 0.9972 & -1.0000 & 0 \\
+	0 & 0 & 0 & 1.0000 \\
+	0 & 0 & -0.4034 & 1.2967
+	\end{bmatrix};
+\bar B = \begin{bmatrix}
+	0 \\
+	0 \\
+	4.2286 \\
+	8.6085
+	\end{bmatrix};
+\bar K^T = \begin{bmatrix}
+	-0.3568 \\ 0.1592 \\ 0.1383 \\ 0.1982
+	\end{bmatrix};
+\]
+\[\sigma(\bar{A} - \bar{B} \bar{K}) = [0.1,~0.2,~0.3,~0.4]\]
+
+Как видно на рис. \ref{fig:task2_y} задача слежения выполняется, ошибка сводится к 0.
+\begin{figure}
+	[H]
+	\centering
+	\includegraphics[width=350pt]{images/task2_system.png}
+	\caption{График слежения дискретной системы с ПВВ за генератором}
+	\label{fig:task2_y}
+\end{figure}
 \newpage
 \section{Выводы}
 В ходе выполнения работы ознакомились с принципом синтеза дискретных систем, анализом устойчивости, а также управления ими. Теоретические выкладки, сделанные в соответствующей секции были подтверждены во время про ведения экспериментов, что можно наблюдать на графиках моделирования.
