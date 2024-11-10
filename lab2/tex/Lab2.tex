@@ -4,6 +4,7 @@
 \usepackage[utf8]{inputenc} % UTF-8 кодировка
 \usepackage[russian]{babel} % Русский язык
 \usepackage{indentfirst} % красная строка в первом параграфе в главе
+\usepackage{ dsfont }
 % Отображение страниц
 \usepackage{geometry} % размеры листа и отступов
 % \usepackage{mathabx}
@@ -371,11 +372,11 @@ B_\eta \\ 0
 	4.2286 \\
 	8.6085
 	\end{bmatrix};
-\bar K^T = \begin{bmatrix}
+\bar K_1^T = \begin{bmatrix}
 	-0.3568 \\ 0.1592 \\ 0.1383 \\ 0.1982
 	\end{bmatrix};
 \]
-\[\sigma(\bar{A} - \bar{B} \bar{K}) = [0.1,~0.2,~0.3,~0.4]\]
+\[\sigma(\bar{A} - \bar{B} \bar{K_1}) = [0.1,~0.2,~0.3,~0.4]\]
 
 Как видно на рис. \ref{fig:task2_y} задача слежения выполняется, ошибка сводится к 0.
 \begin{figure}
@@ -395,9 +396,11 @@ B_\eta \\ 0
 	y_m(m) = C_m x(m)
 \end{cases}
 \]
-\(y_m \in \Re^l\) -- вектор измеряемых величин, \(l < n\). 
+\(y_m \in \mathds{R}^l\) -- вектор измеряемых величин, \(l < n\). 
 Будем строить оценку \(\hat x_m\)
 \[\hat x(m+1) = A \hat x(m) + B u(m) + L(y_m(m) - C_m \hat x(m))\]
+% \[\hat x(m+1) = A \hat x(m) + B u(m) + L(y_m(m) - C_m \hat x(m))\]
+
 Задача заключается в нахождении такой матрицы \(L\), чтобы вектор невязки свелся к 0. Рассмотрим
 \[\hat x(m+1) - x(m+1) = A \hat x(m) + B u(m) + L(y_m(m) - C_m \hat x(m)) - A x(m) + B u(m)\]
 \[\hat x(m+1) - x(m+1) = (A - LC_m)(\hat x(m+1) - x(m+1))\]
@@ -408,13 +411,83 @@ B_\eta \\ 0
 	F_e = A - LC_m
 \end{cases} \rightarrow
 	\tilde x(m+1) = F_e  \tilde x(m)
- \]
+\]
+Для нахождения \(L\) задается матрица \(\Gamma_0 \in \mathds{R}^{n \times n}\) с желаемыми собственными числами и  \(H \in \mathds{R}^{l \times n}\), такая что \((H, \Gamma_0)\) полностью наблюдаема.
+\[
+	\begin{cases}
+		A^T M - M \Gamma_0 = C^T H \\
+		L = H M^{-1} \\
+	\end{cases}
+\]
 
+\subsubsection{Проектирование динамического регулятора с устройством оценки полной размерности}
 
+Динамическим регулятором будем называть совокупность устройства оценки и регулятора, реализующего соотношение
+\[u(m) = -K \hat x(m)\]
+Тогда
+\[
+% \begin{cases}
+	x(m+1) = A x(m) - B K \hat x(m) = A x(m) - BK (x + \tilde x) = Fx(m) - BK \tilde x
+% \end{cases}
+\]
 
+Откуда
+\[
+\begin{cases}
+	x(m+1) = A x(m) + B u(m) \\
+	\tilde x(m+1) = F_e  \tilde x(m) \\
+\end{cases} \rightarrow
+\begin{bmatrix}
+x(m+1) \\
+\tilde x(m+1)
+\end{bmatrix}
+=
+\begin{bmatrix}
+	F & -BK \\
+	0 & F_e
+\end{bmatrix}
+\begin{bmatrix}
+	x(m) \\
+	\tilde x(m)
+\end{bmatrix}
+\]
+\[\bar F = \begin{bmatrix}
+	F & -BK \\
+	0 & F_e
+\end{bmatrix}\]
+Из верхнетреугольного вида матрицы \(\bar F\) следует, что свойства замкнутой
+системы зависят от свойств матрицы \(F = A - BK\) и свойств матрицы \(Fe = A - LC\) и определитель матрицы замкнутой системы равен произведению определителей матриц \(F\) и \(F_e\), а корни характеристического уравнения объединяют корни характеристических уравнений матриц \(F\) и \(F_e\).
 
+Из полученного следует свойство разделения, которое заключается в следующем:
+\begin{enumerate}
+	\item \(n\) желаемых корней замкнутой системы можно обеспечить выбором матрицы обратных связей K, т. е. если A, B -- полностью управляемая пара, то существует матрица K такая, что n собственных чисел матрицы A - BK равны \(\{z_1^* \dots z_n^*\}\);
+	\item оставшиеся n желаемых корней можно обеспечить выбором матрицы входов устройства оценки \(C_m\), т. е. если \(C_m\), A -- полностью наблюдаемая пара, то существует матрица L такая, что n желаемых собственных чисел матрицы \(F_e =A-LC_m\) и равны \(\{z_{e1}^* \dots z_{e1}^*\}\).
+\end{enumerate}
 
+\subsubsection{Результаты для модального регулятора}
+Были использованы полученная ранее матрица \(K_1\) и
+\(
+L = \begin{bmatrix}
+	0.0168 & 0.1143
+\end{bmatrix};
+\). На рис. \ref{fig:task3_1_y} -\ref{fig:task3_1_e} видно, что ошибки свелись к 0.
+\begin{figure}
+	[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{images/task3_1_y.png}
+	\caption{График выхода дискретной системы с неполной информацией и модальным регулятором}
+	\label{fig:task3_1_y}
+\end{figure}
 
+\begin{figure}
+	[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{images/task3_1_e.png}
+	\caption{График вектор невязки наблюдателя дискретной системы с неполной информацией и модальным регулятором}
+	\label{fig:task3_1_e}
+\end{figure}
+
+\subsubsection{Результаты для МВВ}
 
 
 
