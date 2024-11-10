@@ -1,0 +1,523 @@
+\documentclass[a4paper, 14pt]{extarticle}
+
+% Текст
+\usepackage[utf8]{inputenc} % UTF-8 кодировка
+\usepackage[russian]{babel} % Русский язык
+\usepackage{indentfirst} % красная строка в первом параграфе в главе
+\usepackage{ dsfont }
+% Отображение страниц
+\usepackage{geometry} % размеры листа и отступов
+% \usepackage{mathabx}
+\geometry{
+	left=30mm,
+	top=20mm,
+	right=15mm,
+	bottom=25mm,
+	marginparsep=0mm,
+	marginparwidth=0mm,
+	headheight=10mm,
+	headsep=7mm,
+	foot=0mm}
+\usepackage{afterpage,fancyhdr} % настройка колонтитулов
+
+\setlength{\baselineskip}{1.5em}
+\usepackage{titlesec}
+\renewcommand{\thesection}{}
+\renewcommand{\thesubsection}{\arabic{subsection}}
+\titleformat{\section}[block]{\centering\bfseries\Large}{}{5pt}{}
+\titleformat{\subsection}[block]{\bfseries\large}{}{5pt}{}
+
+\pagestyle{fancy}
+\fancypagestyle{style}{ % создание нового стиля style
+	\fancyhf{} % очистка колонтитулов
+    \fancyhead[LO, RE]{\nouppercase{ДСУ}} % название документа наверху
+    \fancyhead[RO, LE]{\nouppercase{\leftmark}} % название section наверху
+	\fancyfoot[C]{\thepage} % номер страницы справа внизу на нечетных и слева внизу на четных
+	\renewcommand{\headrulewidth}{0.25pt} % толщина линии сверху
+	\renewcommand{\footrulewidth}{0pt} % толцина линии снизу
+}
+\fancypagestyle{plain}{ % создание нового стиля plain -- полностью пустого
+	\fancyhf{}
+	\renewcommand{\headrulewidth}{0pt}
+}
+\fancypagestyle{title}{ % создание нового стиля title -- для титульной страницы
+	\fancyhf{}
+	\fancyhead[C]{{\footnotesize
+			Министерство образования и науки Российской Федерации\\
+			Федеральное государственное автономное образовательное учреждение высшего образования
+	}}
+	\fancyfoot[C]{{\large 
+			Санкт-Петербург\\ 2024
+	}}
+	\renewcommand{\headrulewidth}{0pt}
+}
+
+% Математика
+\usepackage{amsmath, amsfonts, amssymb, amsthm} % Набор пакетов для математических текстов
+\usepackage{cancel} % зачеркивание для сокращений
+% Рисунки и фигуры
+\usepackage{graphicx} % вставка рисунков
+\usepackage{epstopdf}
+\usepackage{wrapfig, subcaption} % вставка фигур, обтекая текст
+\usepackage{caption} % для настройки подписей
+\captionsetup{figurewithin=none,labelsep=period, font={small,it}} % настройка подписей к рисункам
+% Рисование
+\usepackage{tikz} % рисование
+\usepackage{circuitikz}
+\usepackage{pgfplots} % графики
+\usepgfplotslibrary{fillbetween}
+% Таблицы
+\usepackage{multirow} % объединение строк
+\usepackage{multicol} % объединение столбцов
+% Остальное
+\usepackage[unicode, pdftex]{hyperref} % гиперссылки
+\usepackage{enumitem} % нормальное оформление списков
+\usepackage{float}
+
+\setlist{itemsep=0.15cm,topsep=0.15cm,parsep=1pt} % настройки списков
+% Теоремы, леммы, определения...
+\theoremstyle{definition}
+\newtheorem{Def}{Определение}
+\newtheorem*{Axiom}{Аксиома}
+\theoremstyle{plain}
+\newtheorem{Th}{Теорема}
+\newtheorem{Task}{Задание}
+\newtheorem{Lem}{Лемма}
+\newtheorem{Cor}{Следствие}
+\newtheorem{Ex}{Пример}
+\theoremstyle{remark}
+\newtheorem*{Note}{Замечание}
+\newtheorem*{Solution}{Решение}
+\newtheorem*{Proof}{Доказательство}
+% Свои команды
+\newcommand{\comb}[1]{\left[\hspace{-4pt}\begin{array}{l}#1\end{array}\right.\hspace{-5pt} } % совокупность уравнений
+\newcommand{\rank}{\mathrm{rank}\;}
+% Титульный лист
+
+\usepackage{listings}
+\newcommand*{\titlePage}{
+	\thispagestyle{title}
+	\begingroup
+	\begin{center}
+		%		{\footnotesize
+			%			Министерство образования и науки Российской Федерации\\
+			%			Федеральное государственное автономное образовательное учреждение высшего образования
+			%		}
+		%		
+		\vspace*{3ex}
+		{\small
+			САНКТ-ПЕТЕРБУРГСКИЙ НАЦИОНАЛЬНЫЙ ИССЛЕДОВАТЕЛЬСКИЙ УНИВЕРСИТЕТ ИНФОРМАЦИОННЫХ ТЕХНОЛОГИЙ, МЕХАНИКИ И ОПТИКИ	
+		}
+		
+		\vspace*{2ex}
+		
+		{\normalsize
+			Факультет систем управления и робототехники
+		}
+		
+		\vspace*{15ex}
+		
+		{
+			Отчёт по лабораторной работе №2\\
+			<<Классические регуляторы для дискретных систем>>\\
+			по дисциплине\\
+			<<Дискретные системы управления>>\\
+				% \vspace{2em}
+				Вариант 9
+			
+		}
+		
+	\end{center}
+	\vspace*{10ex}
+	\begin{flushright}
+		{\large 
+			\underline{Выполнили}: студенты потока 1.2 \\
+			\begin{flushright}
+				\textbf{Дюжев В. Д.}\\
+				\textbf{Лалаянц К. А.}\\
+			\end{flushright}
+		}
+		\vspace*{5ex}
+		{\large 
+			\underline{Преподаватель}:\\ 
+			\begin{flushright}
+            \textit{Краснов А.Ю.}
+			\end{flushright}
+		}
+	\end{flushright}	
+	\newpage
+	\setcounter{page}{1}
+	\endgroup}
+%\usepackage{newtxmath,newtxtext}
+%\lstset{literate={а}{\cyra}1{б}{\cyrb}1{в}{\cyrv}1{г}{\cyrg}1{д}{\cyrd}1{е}{\cyre}1{ж}{\cyrzh}1{з}{\cyrz}1{и}{\cyri}1{к}{\cyrk}1{л}{\cyrl}1{м}{\cyrm}1{н}{\cyrn}1{о}{\cyro}1{п}{\cyrp}1{р}{\cyrr}1{с}{\cyrs}1{т}{\cyrt}1{у}{\cyru}1{ф}{\cyrf}1{х}{h}1{ц}{w}1{ч}{\cyrch}1{ш}{\cyrsh}1{щ}{\cyrshch}1{ь}{m}1{ъ}{m}1{ы}{y}1{э}{e}1{ю}{\cyryu}1{я}{\cyrya}}
+
+\lstset{basicstyle=\small}
+\newcommand{\tasknum}[3]{Task}%\textunderscore{#1}\textunderscore{#2}y\textunderscore{#2}\textunderscore{#3}}
+\usepackage{pdfpages}
+
+\newcommand{\mat}[1]{\begin{pmatrix}#1\end{pmatrix}} 
+\newcommand{\bmat}[1]{\begin{bmatrix}#1\end{bmatrix}} 
+
+\newcommand{\code}[2]
+{
+\begin{minipage}{0.45\textwidth}
+    \textbf{Code:}
+    #1
+\end{minipage}
+}
+
+\begin{document}
+\renewcommand{\contentsname}{\hfillОГЛАВЛЕНИЕ\hfill} 
+\titlePage
+\thispagestyle{plain}
+\tableofcontents
+\pagestyle{style}
+
+\newpage
+\setcounter{page}{1}
+
+% \includepdf[pages={33}, scale=1,addtotoc={1, section, 1, {Текст задания}, text}]{./Tasks.pdf}
+
+\section{Введение}
+\subsection{Цель работы}
+Ознакомиться с методами синтеза классических регуляторов для дискретных систем.
+
+\subsection{Данные варианта}
+\begin{itemize}
+	\item Тип ОУ: 2 (рис. \ref{fig:plant_type});
+	\begin{figure}
+	    [H]
+	    \centering
+	    \includegraphics[width=350pt]{images/plant_type.png}
+	    \caption{Тип ОУ}
+		\label{fig:plant_type}
+	\end{figure}
+	\item $k_1$: 7.29
+    \item $a^1_0$: 1
+    \item $T_1$: 0.38
+    \item $\xi$: 0
+    \item $k_2$: 9.46
+    \item $a_0^2$: 1
+    \item $T_2$: 1
+    \item $T$: 0.25
+    \item $g(k) = 7.68 \sin{(0.3kT)}$
+\end{itemize}
+\newpage
+
+\section{Основная часть}
+\subsection{Проектирование дискретных стабилизирующих регуляторов}
+Дискретный вариант имеет вид:
+\[
+	A = \begin{bmatrix} 0.3581 & -0.2104 \\ 0.3198 & 0.9387 \end{bmatrix}, \quad
+	B = \begin{bmatrix} 1.279 \\ 0.3728 \end{bmatrix}, \quad
+	C = \begin{bmatrix} 0 & 11.34 \end{bmatrix}, \quad
+	D = \begin{bmatrix} 0 \end{bmatrix}
+\]
+и имеет cобственные числа 0.5179 и 0.7788.
+
+В качестве эталонной модели возьмем оптимальную по быстродействию дискретную систему, т.е. \(z_i^* = 0,~i=\overline{1,n}\).
+Тогда введем эталонную модель:
+\[
+	\begin{cases}
+		\eta(m+1) = \Gamma \eta(m) \\
+		\nu(m) = -H \eta(m)
+	\end{cases}
+\]
+\[
+	\Gamma = \begin{bmatrix} 0 & 1 \\ 0 & 0 \end{bmatrix}, \quad
+	H = \begin{bmatrix} 1 & 1 \end{bmatrix}, \quad
+\]
+Для синтеза модального регулятора необходимо соблюдение следующих условий:
+\begin{itemize}
+	\item \(rank(obsv(H, \Gamma)) = n\);
+	\item \(rank(ctrb(A, B)) = n\);
+	\item у А и \(\Gamma\) нет общих собственных чисел.
+\end{itemize}
+
+Известно, что \(F = A - BK\) и \(\Gamma\) подобны. Следовательно \(F = M \Gamma M^{-1}\). Для получения дополнительного матричного уравнения потребуем, чтобы выход эталонной модели совпадал бы с желаемым управляемым воздействием.
+Из этого:
+\[
+	\begin{cases}
+		AM - M \Gamma = BH \\
+		K = HM^{-1}
+	\end{cases} \rightarrow
+	\begin{cases}
+		K = [0.6122~~1.3780]\\
+		A - BK = \begin{bmatrix}
+			-0.4250 & -1.9729 \\
+			0.0915 & 0.4250
+			\end{bmatrix} \\
+		\sigma(A - BK) = [-0.54 ~ 0.54]*10^{-8}
+	\end{cases} 
+\]
+Видно, что из-за неточности численного решения уравнения Сильвестра в Matlab, собственные числа незначительно отличаются от 0. Это повышает время сходимости, которое должно было быть равным одному периоду дискретизации благодаря нулевым собственным числам. Результаты моделирования представлены на рис. \ref{fig:task1}.
+\begin{figure}
+	[H]
+	\centering
+	\includegraphics[width=350pt]{images/task1.png}
+	\caption{График состояния объекта при использовании модального регулятора.}
+	\label{fig:task1}
+\end{figure}
+
+\subsection{Проектирование дискретных следящих регуляторов}
+\subsubsection{Построение задающего воздействия}
+Известно, что задающее воздействие имеет вид:
+\[
+\begin{cases}
+	\xi(m+1) = \Gamma \xi(m)\\
+	g(m) = H_\xi \xi(m)
+\end{cases}
+\]
+Для построения задающего воздействия были выбраны матрицы непрерывной системы:
+\[
+	\Gamma_c = \begin{bmatrix} 0 & 0.3 \\ -0.3 & 0 \end{bmatrix}, \quad
+	H_{\xi c} = \begin{bmatrix} 7.68 & 0 \end{bmatrix}, \quad
+	\xi(0) = \begin{bmatrix} 0 \\ 1 \end{bmatrix};
+\]
+После дискретизации был получен их дискретный вариант:
+\[
+    \Gamma = \begin{bmatrix} 0.9972 & 0.07493 \\ -0.07493 & 0.9972 \end{bmatrix}, \quad
+    H_\xi = \begin{bmatrix} 7.68 & 0 \end{bmatrix}, \quad
+	\xi(0) = \begin{bmatrix} 0 \\ 1 \end{bmatrix};
+\]
+Сравнение линейного и непрерывного генераторов представлен на рис. \ref{fig:task2_gen}.
+\begin{figure}
+	[H]
+	\centering
+	\includegraphics[width=350pt]{images/task2_generator.png}
+	\caption{График сравнения дискретного и непрерывного генераторов}
+	\label{fig:task2_gen}
+\end{figure}
+\subsubsection{Синтез регулятора со встроенной моделью}
+В дискретном случае:
+\[g(m) = H_\xi \Gamma^m \xi(0)\]
+
+Представим объект управления в канонической наблюдаемой форме:
+\[
+    A = \begin{bmatrix} 0 & 1 \\ -0.4034 & 1.297 \end{bmatrix}, \quad
+    B = \begin{bmatrix} 4.229 \\ 8.608 \end{bmatrix}, \quad
+    C = \begin{bmatrix} 1 & 0 \end{bmatrix}, \quad
+    D = \begin{bmatrix} 0 \end{bmatrix};
+\]
+При условии, что (A, B) -- полностью управляема, а (С, А) -- полностью наблюдаема, синтезируем регулятор:
+\[
+\begin{cases}
+	e = g - y\\
+	\eta(m+1) = \Gamma \eta(m) + B_\eta e() \\
+	u(m) = k_1 e(m) + K_\eta \eta(m) - k_2 x_2(m) - \dots - k_n x_n(m)
+\end{cases}
+\]
+\(B_\eta\) выбирается из условия полной управляемости пары \((\Gamma, B_\eta)\). Сведем задачу к модальному управлению:
+\[u(m) = k_1 g(m) + K_\eta \eta(m) - K x(m) = k\]
+
+Введем в рассмотрение расширенную модель ОУ, объединив уравнение движения объекта с уравнением встроенной модели:
+
+\[
+\bar{x}(m + 1) = 
+\begin{bmatrix}
+\eta(m + 1) \\ x(m + 1)
+\end{bmatrix}
+= 
+\begin{bmatrix}
+\Gamma & -B_\eta C \\
+0 & A 
+\end{bmatrix}
+\begin{bmatrix}
+\eta(m) \\ x(m)
+\end{bmatrix}
++ 
+\begin{bmatrix}
+0 \\ B 
+\end{bmatrix} u(m)
++ 
+\begin{bmatrix}
+B_\eta \\ 0 
+\end{bmatrix} g(m)
+\]
+
+Тогда, с учетом обозначений:
+\[
+\bar{A} = \begin{bmatrix} \Gamma & -B_\eta C \\ 0 & A \end{bmatrix}, \quad
+\bar{B} = \begin{bmatrix} 0 \\ B \end{bmatrix}, \quad
+\bar{B}_1 = \begin{bmatrix} B_\eta \\ 0 \end{bmatrix}, \quad
+\bar{K} = \begin{bmatrix} -K_\eta & K \end{bmatrix}
+\]
+
+получим в итоге для замкнутой системы:
+\[
+\bar{x}(m + 1) = (\bar{A} - \bar{B} \bar{K}) \bar{x}(m) + (\bar{B}_1 + k_1 \bar{B}) g(m) = \bar{F} x(m) + \bar{B}_g g(m),
+\]
+
+где \(\bar{F} = \bar{A} - \bar{B} \bar{K}\) — матрица размерности \((n + q) \times (n + q)\), определяющая динамические свойства замкнутой системы; \(\bar{B}_g = \bar{B}_1 + k_1 \bar{B}\) — матрица входов по задающему воздействию размерности \((n + q) \times 1\).
+
+Если пара \(A, B\) полностью управляема, то выбором матрицы \(\bar{K}\) можно обеспечить произвольные желаемые корни характеристического полинома или коэффициенты уравнения замкнутой системы. Отметим, что пара \(\bar{A}, \bar{B}\) будет полностью управляема при выполнении следующих условий:
+
+\begin{itemize}
+    \item пара \(A, B\) полностью управляема, а пара \(C, A\) полностью наблюдаема;
+    \item пара \(\Gamma, B_\eta\) полностью управляема.
+\end{itemize}
+
+Итого получаем
+\[
+\bar A =
+	\begin{bmatrix}
+	0.9972 & 0.0749 & -1.0000 & 0 \\
+	-0.0749 & 0.9972 & -1.0000 & 0 \\
+	0 & 0 & 0 & 1.0000 \\
+	0 & 0 & -0.4034 & 1.2967
+	\end{bmatrix};
+\bar B = \begin{bmatrix}
+	0 \\
+	0 \\
+	4.2286 \\
+	8.6085
+	\end{bmatrix};
+\bar K_1^T = \begin{bmatrix}
+	-0.3568 \\ 0.1592 \\ 0.1383 \\ 0.1982
+	\end{bmatrix};
+\]
+\[\sigma(\bar{A} - \bar{B} \bar{K_1}) = [0.1,~0.2,~0.3,~0.4]\]
+
+Как видно на рис. \ref{fig:task2_y} задача слежения выполняется, ошибка сводится к 0.
+\begin{figure}
+	[H]
+	\centering
+	\includegraphics[width=350pt]{images/task2_system.png}
+	\caption{График слежения дискретной системы с ПВВ за генератором}
+	\label{fig:task2_y}
+\end{figure}
+
+
+\subsection{Построение регуляторов для объектов с неполной информацией}
+\subsubsection{Устройства оценки полной размерности}
+\[
+\begin{cases}
+	x(m+1) = A x(m) + B u(m) \\
+	y_m(m) = C_m x(m)
+\end{cases}
+\]
+\(y_m \in \mathds{R}^l\) -- вектор измеряемых величин, \(l < n\). 
+Будем строить оценку \(\hat x_m\)
+\[\hat x(m+1) = A \hat x(m) + B u(m) + L(y_m(m) - C_m \hat x(m))\]
+% \[\hat x(m+1) = A \hat x(m) + B u(m) + L(y_m(m) - C_m \hat x(m))\]
+
+Задача заключается в нахождении такой матрицы \(L\), чтобы вектор невязки свелся к 0. Рассмотрим
+\[\hat x(m+1) - x(m+1) = A \hat x(m) + B u(m) + L(y_m(m) - C_m \hat x(m)) - A x(m) + B u(m)\]
+\[\hat x(m+1) - x(m+1) = (A - LC_m)(\hat x(m+1) - x(m+1))\]
+Введем обозначение вектора невязки в виде:
+\[
+\begin{cases}
+	\tilde x(m) = \hat x(m) - x(m) \\
+	F_e = A - LC_m
+\end{cases} \rightarrow
+	\tilde x(m+1) = F_e  \tilde x(m)
+\]
+Для нахождения \(L\) задается матрица \(\Gamma_0 \in \mathds{R}^{n \times n}\) с желаемыми собственными числами и  \(H \in \mathds{R}^{l \times n}\), такая что \((H, \Gamma_0)\) полностью наблюдаема.
+\[
+	\begin{cases}
+		A^T M - M \Gamma_0 = C^T H \\
+		L = H M^{-1} \\
+	\end{cases}
+\]
+
+\subsubsection{Проектирование динамического регулятора с устройством оценки полной размерности}
+
+Динамическим регулятором будем называть совокупность устройства оценки и регулятора, реализующего соотношение
+\[u(m) = -K \hat x(m)\]
+Тогда
+\[
+% \begin{cases}
+	x(m+1) = A x(m) - B K \hat x(m) = A x(m) - BK (x + \tilde x) = Fx(m) - BK \tilde x
+% \end{cases}
+\]
+
+Откуда
+\[
+\begin{cases}
+	x(m+1) = A x(m) + B u(m) \\
+	\tilde x(m+1) = F_e  \tilde x(m) \\
+\end{cases} \rightarrow
+\begin{bmatrix}
+x(m+1) \\
+\tilde x(m+1)
+\end{bmatrix}
+=
+\begin{bmatrix}
+	F & -BK \\
+	0 & F_e
+\end{bmatrix}
+\begin{bmatrix}
+	x(m) \\
+	\tilde x(m)
+\end{bmatrix}
+\]
+\[\bar F = \begin{bmatrix}
+	F & -BK \\
+	0 & F_e
+\end{bmatrix}\]
+Из верхнетреугольного вида матрицы \(\bar F\) следует, что свойства замкнутой
+системы зависят от свойств матрицы \(F = A - BK\) и свойств матрицы \(Fe = A - LC\) и определитель матрицы замкнутой системы равен произведению определителей матриц \(F\) и \(F_e\), а корни характеристического уравнения объединяют корни характеристических уравнений матриц \(F\) и \(F_e\).
+
+Из полученного следует свойство разделения, которое заключается в следующем:
+\begin{enumerate}
+	\item \(n\) желаемых корней замкнутой системы можно обеспечить выбором матрицы обратных связей K, т. е. если A, B -- полностью управляемая пара, то существует матрица K такая, что n собственных чисел матрицы A - BK равны \(\{z_1^* \dots z_n^*\}\);
+	\item оставшиеся n желаемых корней можно обеспечить выбором матрицы входов устройства оценки \(C_m\), т. е. если \(C_m\), A -- полностью наблюдаемая пара, то существует матрица L такая, что n желаемых собственных чисел матрицы \(F_e =A-LC_m\) и равны \(\{z_{e1}^* \dots z_{e1}^*\}\).
+\end{enumerate}
+
+\subsubsection{Результаты для модального регулятора}
+Были использованы полученная ранее матрица \(K_1\) и
+\(
+L = \begin{bmatrix}
+	0.0168 & 0.1143
+\end{bmatrix};
+\). На рис. \ref{fig:task3_1_y} -\ref{fig:task3_1_e} видно, что ошибки свелись к 0.
+\begin{figure}
+	[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{images/task3_1_y.png}
+	\caption{График выхода дискретной системы с неполной информацией и модальным регулятором}
+	\label{fig:task3_1_y}
+\end{figure}
+
+\begin{figure}
+	[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{images/task3_1_e.png}
+	\caption{График вектор невязки наблюдателя дискретной системы с неполной информацией и модальным регулятором}
+	\label{fig:task3_1_e}
+\end{figure}
+
+\subsubsection{Результаты для МВВ}
+\begin{figure}
+	[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{images/task3_2_y.png}
+	\caption{График выхода дискретной системы с неполной информацией и модальным регулятором}
+	\label{fig:task3_2_y}
+\end{figure}
+
+\begin{figure}
+	[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{images/task3_2_e.png}
+	\caption{График вектор невязки наблюдателя дискретной системы с неполной информацией и модальным регулятором}
+	\label{fig:task3_2_e}
+\end{figure}
+
+\begin{figure}
+	[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{images/task3_2_x.png}
+	\caption{График вектор состояния наблюдателя дискретной системы с неполной информацией и модальным регулятором}
+	\label{fig:task3_2_x}
+\end{figure}
+
+
+
+
+\newpage
+\section{Выводы}
+В ходе выполнения работы ознакомились с методами синтеза классических регуляторов для дискретных систем. Теоретические выкладки, сделанные в соответствующей секции были подтверждены во время про ведения экспериментов, что можно наблюдать на графиках моделирования.
+
+
+\end{document}
