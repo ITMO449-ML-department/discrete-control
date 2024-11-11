@@ -191,15 +191,94 @@
 \section{Экспериментальная часть}
 
 \subsection{Модель}
+Составим схему моделирования:
+\begin{figure}
+    [H]
+    \centering
+    \includegraphics[width=\textwidth]{images/scheme.png}
+    \caption{Схема.}
+    \label{fig:scheme}
+\end{figure}
+В качестве параметров системы согласно варианту возьмем $T_1 = 0.85$, $T_2 = 0.95$.
 
 \subsection{Подбор значения $q_0$}
+Установим значение $T = \frac{T_1}{2}$. Проведем моделирование для различных значений $q_0$ при $g=1$, без внешних возмущений:
+\begin{figure}
+    [H]
+    \centering
+    \includegraphics[width=300pt]{images/task2__q0_2_state.png}
+    \caption{Задание 2. Моделирование при $q_0 = 2$.}
+    \label{fig:task2__q0_2_state}
+\end{figure}
 
-\subsection{Исследование робастности системы к возмущениям}
+\begin{figure}
+    [H]
+    \centering
+    \includegraphics[width=300pt]{images/task2__q0_4_state.png}
+    \caption{Задание 2. Моделирование при $q_0 = 4$.}
+    \label{fig:task2__q0_4_state}
+\end{figure}
+\begin{figure}
+    [H]
+    \centering
+    \includegraphics[width=300pt]{images/task2__q0_10_state.png}
+    \caption{Задание 2. Моделирование при $q_0 = 10$.}
+    \label{fig:task2__q0_10_state}
+\end{figure}
 
+Заметим, что при $q_0=4$  система имеет слабоколебательный переходный процесс.
+
+\subsection{Исследование робастности системы}
+Зафиксировав $q_0=$роведем моделирование системы при различных задающих воздействиях и внешних возмущениях:
+\begin{figure}
+    [H]
+    \centering
+    \includegraphics[width=300pt]{images/task3__step_input_state.png}
+    \caption{Задание 3. Моделирование при ступенчатом изменении $g$, без возмущений.}
+    \label{fig:task3__step_input_state}
+\end{figure}
+\begin{figure}
+    [H]
+    \centering
+    \includegraphics[width=300pt]{images/task3__step_perturb_state.png}
+    \caption{Задание 3. Моделирование при $g=1$, ступенчатое изменение возмущений.}
+    \label{fig:task3__step_perturb_state}
+\end{figure}
+\begin{figure}
+    [H]
+    \centering
+    \includegraphics[width=300pt]{images/task3__noise_perturb_state.png}
+    \caption{Задание 3. Моделирование при $g=1$, случайные возмущения.}
+    \label{fig:task3__noise_perturb_state}
+\end{figure}
+
+Заметим, что система оказалась робастна в приведенных выше условиях эксперимента.
 \subsection{Исследование влияния периода дискретизации}
+Установим значение $T = \frac{T_1}{4}$. Проведем моделирование при ступенчатом изменении возмущения. Заметим, что колебательность исчезла:
+\begin{figure}
+    [H]
+    \centering
+    \includegraphics[width=300pt]{images/task4__step_perturb_state.png}
+    \caption{Задание 4. Моделирование при $g=1$, ступенчатое изменение возмущений.}
+    \label{fig:task4__step_perturb_state}
+\end{figure}
 
 \subsection{Исследование влияния неточности компенсации полюсов}
-
+Проведем моделирование при увеличенном и уменьшенном значении $T_2$:
+\begin{figure}
+    [H]
+    \centering
+    \includegraphics[width=300pt]{images/task5__decreased_state.png}
+    \caption{Задание 5. Моделирование при уменьшенном значении $T_2$ ($80\%$).}
+    \label{fig:task5__decreased_state}
+\end{figure}
+\begin{figure}
+    [H]
+    \centering
+    \includegraphics[width=300pt]{images/task5__increased_state.png}
+    \caption{Задание 5. Моделирование при увеличенном значении $T_2$ ($120\%$).}
+    \label{fig:task5__increased_state}
+\end{figure}
 \section{Выводы}
 
 \end{document}
