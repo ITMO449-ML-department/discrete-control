@@ -1,0 +1,320 @@
+\documentclass[a4paper, 14pt]{extarticle}
+
+% Текст
+\usepackage[utf8]{inputenc} % UTF-8 кодировка
+\usepackage[russian]{babel} % Русский язык
+\usepackage{indentfirst} % красная строка в первом параграфе в главе
+\usepackage{ dsfont }
+% Отображение страниц
+\usepackage{geometry} % размеры листа и отступов
+% \usepackage{mathabx}
+\geometry{
+	left=30mm,
+	top=20mm,
+	right=15mm,
+	bottom=25mm,
+	marginparsep=0mm,
+	marginparwidth=0mm,
+	headheight=10mm,
+	headsep=7mm,
+	foot=0mm}
+\usepackage{afterpage,fancyhdr} % настройка колонтитулов
+
+\setlength{\baselineskip}{1.5em}
+\usepackage{titlesec}
+\renewcommand{\thesection}{}
+\renewcommand{\thesubsection}{\arabic{subsection}}
+\titleformat{\section}[block]{\centering\bfseries\Large}{}{5pt}{}
+\titleformat{\subsection}[block]{\bfseries\large}{}{5pt}{}
+
+\pagestyle{fancy}
+\fancypagestyle{style}{ % создание нового стиля style
+	\fancyhf{} % очистка колонтитулов
+    \fancyhead[LO, RE]{\nouppercase{ДСУ}} % название документа наверху
+    \fancyhead[RO, LE]{\nouppercase{\leftmark}} % название section наверху
+	\fancyfoot[C]{\thepage} % номер страницы справа внизу на нечетных и слева внизу на четных
+	\renewcommand{\headrulewidth}{0.25pt} % толщина линии сверху
+	\renewcommand{\footrulewidth}{0pt} % толцина линии снизу
+}
+\fancypagestyle{plain}{ % создание нового стиля plain -- полностью пустого
+	\fancyhf{}
+	\renewcommand{\headrulewidth}{0pt}
+}
+\fancypagestyle{title}{ % создание нового стиля title -- для титульной страницы
+	\fancyhf{}
+	\fancyhead[C]{{\footnotesize
+			Министерство образования и науки Российской Федерации\\
+			Федеральное государственное автономное образовательное учреждение высшего образования
+	}}
+	\fancyfoot[C]{{\large 
+			Санкт-Петербург\\ 2024
+	}}
+	\renewcommand{\headrulewidth}{0pt}
+}
+
+% Математика
+\usepackage{amsmath, amsfonts, amssymb, amsthm} % Набор пакетов для математических текстов
+\usepackage{cancel} % зачеркивание для сокращений
+% Рисунки и фигуры
+\usepackage{graphicx} % вставка рисунков
+\usepackage{epstopdf}
+\usepackage{wrapfig, subcaption} % вставка фигур, обтекая текст
+\usepackage{caption} % для настройки подписей
+\captionsetup{figurewithin=none,labelsep=period, font={small,it}} % настройка подписей к рисункам
+% Рисование
+\usepackage{tikz} % рисование
+\usepackage{circuitikz}
+\usepackage{pgfplots} % графики
+\usepgfplotslibrary{fillbetween}
+% Таблицы
+\usepackage{multirow} % объединение строк
+\usepackage{multicol} % объединение столбцов
+% Остальное
+\usepackage[unicode, pdftex]{hyperref} % гиперссылки
+\usepackage{enumitem} % нормальное оформление списков
+\usepackage{float}
+
+\setlist{itemsep=0.15cm,topsep=0.15cm,parsep=1pt} % настройки списков
+% Теоремы, леммы, определения...
+\theoremstyle{definition}
+\newtheorem{Def}{Определение}
+\newtheorem*{Axiom}{Аксиома}
+\theoremstyle{plain}
+\newtheorem{Th}{Теорема}
+\newtheorem{Task}{Задание}
+\newtheorem{Lem}{Лемма}
+\newtheorem{Cor}{Следствие}
+\newtheorem{Ex}{Пример}
+\theoremstyle{remark}
+\newtheorem*{Note}{Замечание}
+\newtheorem*{Solution}{Решение}
+\newtheorem*{Proof}{Доказательство}
+% Свои команды
+\newcommand{\comb}[1]{\left[\hspace{-4pt}\begin{array}{l}#1\end{array}\right.\hspace{-5pt} } % совокупность уравнений
+\newcommand{\rank}{\mathrm{rank}\;}
+% Титульный лист
+
+\usepackage{listings}
+\newcommand*{\titlePage}{
+	\thispagestyle{title}
+	\begingroup
+	\begin{center}
+		%		{\footnotesize
+			%			Министерство образования и науки Российской Федерации\\
+			%			Федеральное государственное автономное образовательное учреждение высшего образования
+			%		}
+		%		
+		\vspace*{3ex}
+		{\small
+			САНКТ-ПЕТЕРБУРГСКИЙ НАЦИОНАЛЬНЫЙ ИССЛЕДОВАТЕЛЬСКИЙ УНИВЕРСИТЕТ ИНФОРМАЦИОННЫХ ТЕХНОЛОГИЙ, МЕХАНИКИ И ОПТИКИ	
+		}
+		
+		\vspace*{2ex}
+		
+		{\normalsize
+			Факультет систем управления и робототехники
+		}
+		
+		\vspace*{15ex}
+		
+		{
+			Отчёт по лабораторной работе №4\\
+			<<Дискретные регуляторы с заданными характеристиками переходных процессов>>\\
+			по дисциплине\\
+			<<Дискретные системы управления>>\\
+				% \vspace{2em}
+				Вариант 9
+			
+		}
+		
+	\end{center}
+	\vspace*{10ex}
+	\begin{flushright}
+		{\large 
+			\underline{Выполнили}: студенты потока 1.2 \\
+			\begin{flushright}
+				\textbf{Дюжев В. Д.}\\
+				\textbf{Лалаянц К. А.}\\
+			\end{flushright}
+		}
+		\vspace*{5ex}
+		{\large 
+			\underline{Преподаватель}:\\ 
+			\begin{flushright}
+            \textit{Краснов А.Ю.}
+			\end{flushright}
+		}
+	\end{flushright}	
+	\newpage
+	\setcounter{page}{1}
+	\endgroup}
+%\usepackage{newtxmath,newtxtext}
+%\lstset{literate={а}{\cyra}1{б}{\cyrb}1{в}{\cyrv}1{г}{\cyrg}1{д}{\cyrd}1{е}{\cyre}1{ж}{\cyrzh}1{з}{\cyrz}1{и}{\cyri}1{к}{\cyrk}1{л}{\cyrl}1{м}{\cyrm}1{н}{\cyrn}1{о}{\cyro}1{п}{\cyrp}1{р}{\cyrr}1{с}{\cyrs}1{т}{\cyrt}1{у}{\cyru}1{ф}{\cyrf}1{х}{h}1{ц}{w}1{ч}{\cyrch}1{ш}{\cyrsh}1{щ}{\cyrshch}1{ь}{m}1{ъ}{m}1{ы}{y}1{э}{e}1{ю}{\cyryu}1{я}{\cyrya}}
+
+\lstset{basicstyle=\small}
+\newcommand{\tasknum}[3]{Task}%\textunderscore{#1}\textunderscore{#2}y\textunderscore{#2}\textunderscore{#3}}
+\usepackage{pdfpages}
+
+\newcommand{\mat}[1]{\begin{pmatrix}#1\end{pmatrix}} 
+\newcommand{\bmat}[1]{\begin{bmatrix}#1\end{bmatrix}} 
+
+\newcommand{\code}[2]
+{
+\begin{minipage}{0.45\textwidth}
+    \textbf{Code:}
+    #1
+\end{minipage}
+}
+
+\begin{document}
+\renewcommand{\contentsname}{\hfillОГЛАВЛЕНИЕ\hfill} 
+\titlePage
+\thispagestyle{plain}
+\tableofcontents
+\pagestyle{style}
+
+\newpage
+\setcounter{page}{1}
+
+% \includepdf[pages={33}, scale=1,addtotoc={1, section, 1, {Текст задания}, text}]{./Tasks.pdf}
+
+\section{Введение}
+\subsection{Цель работы}
+Изучение различных дискретных алгоритмов управления с заданными характеристиками переходных процессов.
+
+\subsection{Данные варианта}
+\begin{itemize}
+	\item $T$: 0.5
+	\item \(a\): 1.8
+	\item \(b\): 7.7
+	\item \(\zeta\): 0.69
+	\item \(\omega_d\): 5
+	\item \(K_\nu\): 0.1
+\end{itemize}
+\newpage
+
+\section{Основная часть}
+ОУ имеет вид:
+\[G(s) = \frac{e^{-1.8s}}{1 + 7.7s}\]
+
+В дискретном виде c T = 1c ОУ имеет вид:
+\[HG(z) = \frac{1}{z^2} \frac{0.02564z + 09615}{z - 0.8782}\]
+
+Для разомкнутой системы, представляющей из себя последовательно: R -- вход; D -- регулятор; HG -- ОУ + ЭНП; Y -- выход. Передаточная функция замкнутой системы имеет вид
+\[\frac{Y(z)}{R(z)} = \frac{D(z)HG(z)}{1 + D(z)HG(z)}\]
+Пусть \(T_d = \frac{Y(z)}{R(z)}\) -- желаемое поведение замкнутой системы, тогда
+\[D(z) = \frac{1}{HG(z)} \frac{T_d(z)}{1 - T_d(z)}\]
+
+
+
+\subsection{Апериодический регулятор с T = 1}
+Апериодический регулятор – это регулятор, который обеспечивает слежение за ступенчатым входным сигналом, но с задержкой в несколько периодов дискретности, т. е. требуется, чтобы реакция системы
+была равна единице для каждого интервала дискретности после приложения
+единичного ступенчатого входного воздействия. В таком случае желаемая передаточная функция замкнутой системы будет иметь вид
+\[T_d(z) = z^{-k},\]
+где \(k \geq 3\). Выберем \(k = 3\)
+\[D(z) = \frac{1}{HG(z)} \frac{z^{-3}}{1 - z^{-3}} = \frac{z^6 - 0.8782z^5}{0.02564 z^7 + 0.09615 z^6 - 0.02564 z^4 - 0.09615 z^3}\]
+
+\begin{figure}
+	[H]
+	\centering
+	\includegraphics[width=350pt]{images/task1_y.png}
+	\caption{График выхода объекта при использовании апериодического регулятора.}
+	\label{fig:task1_y}
+\end{figure}
+\begin{figure}
+	[H]
+	\centering
+	\includegraphics[width=350pt]{images/task1_u.png}
+	\caption{График выхода апериодического регулятора.}
+	\label{fig:task1_u}
+\end{figure}
+Как видно на рисунках \ref{fig:task1_y}-\ref{fig:task1_u}, желаемое поведение объекта совпадает с действительным. 
+
+График входного воздействия возрастает, вероятно из-за собственного числа -3.75 у регулятора вместе с ненулевой матрицей D у объекта. Засчет этого \(u\) возрастает как степенная функция и прокидывается напрямую в выход, что делает систему неустойчивой спустя какое-то время.
+% \newpage
+\subsection{Регулятор Далина с T = 1}
+Регулятор Далина представляет собой модификацию апериодического регулятора и обеспечивает более плавный экспоненциальный отклик, чем у последнего. 
+\[T_d(z) = \frac{1}{z^k} \frac{1 - e^{-T/q}}{z - e^{-T/q}}\]
+При \(q = 5\), \(k=3\)
+\[D(z)= \frac{0.63 z^7 - 0.78 z^6 + 0.20 z^5}{0.025 z^9 + 0.077 z^8 - 0.067 z^7 + 0.013 z^6 - 0.016 z^5 - 0.054 z^4 + 0.022 z^3}\]
+
+\begin{figure}
+	[H]
+	\centering
+	\includegraphics[width=350pt]{images/task2_y.png}
+	\caption{График выхода объекта при использовании регулятора Далина.}
+	\label{fig:task2_y}
+\end{figure}
+\begin{figure}
+	[H]
+	\centering
+	\includegraphics[width=350pt]{images/task2_u.png}
+	\caption{График выхода регулятора Далина.}
+	\label{fig:task2_u}
+\end{figure}
+Как видно на рисунках \ref{fig:task2_y}-\ref{fig:task2_u}, желаемое поведение объекта совпадает с действительным. 
+Причины, по которым управление стремится в бесконечность те же, что и в прошлом случае.
+
+\subsection{Регулятор с заданным расположением полюсов}
+\[HG(z) = \frac{0.03z + 0.03*0.75}{z^2 - 1.5z + 0.5}\]
+Задача состоит в том, чтобы разработать дискретный регулятор такой, чтобы замкнутая система имела колебательный отклик с декрементом затухания \(\zeta = 0.69\) и частотой колебаний \(\omega_d = 5\). 
+Установившаяся ошибка для ступенчатого входа должна быть равна нулю, а установившаяся ошибка для линейно
+нарастающего входа должна быть \(K_\nu  = 0.1\) при периоде дискретизации \(T = 0.5c\). 
+
+Исходя из требований к отклику замкнутой системы, определим полюса передаточной функции:
+\[z_{1,2} = exp(-\zeta \omega_d T \pm j \omega_d T \sqrt{1 - \zeta^2})\]
+Требуемые полюса примут значения:
+\[z_{1,2} = -0.0421 \pm 0.1731j \]
+
+Желаемая передаточная функция замкнутой системы будет иметь вид
+\[T(z) = \frac{b_0 + b_1 z^{-1} + b_2 z^{-2} + \dots}{(z^{-1} + 0.0421 + 0.1731j)(z^{-1}  + 0.0421 - 0.1731j)}\]
+Из соображений физической реализуемости, \(b_0 = 0\) и лишь коэффициенты \(b_1\) и \(b_1\) будут ненулевыми
+\[T(z) = \frac{b_1 z + b_2}{z^2 + 0.0842z + 0.03173602}\]
+
+Установившаяся ошибка примет нулевое значение при \(T(1) = 1\).
+\[b_1 + b_2 = 1.11593602\]
+
+Пусть \(K_\nu  = 0.1\)
+\[
+\frac{dT}{dt} \Bigg|_{z=1} = \frac{b_1 ( z^2 + 0.0842z + 0.03173602) - ( b_1 z + b_2 ) ( 2z + 0.0842 )}{(  z^2 + 0.0842z + 0.03173602)^2} = -\frac{1}{K_v T} = -20.
+\]
+Итого получается система:
+\[
+\begin{cases}
+	b_1 + b_2 = 1.11593602 \\
+	2.56974391511729b_1 +1.67363519375888b_2 = -20
+\end{cases}
+\]  
+\[
+\begin{cases}
+	b_1 = -24.4029204000002 \\
+	b_2 = 25.5188564200002
+\end{cases}
+\]
+\[C(z) = \frac{-24.4 z^5 + 60.07 z^4 - 46.02 z^3 + 10.48 z^2 - 0.5277 z + 0.4049}{0.03 z^5 + 0.7596 z^4 - 0.149 z^3 - 0.5674 z^2 - 0.05507 z - 0.0182}\]
+Как видно на рисунках \ref{fig:task3_y}-\ref{fig:task3_u}, желаемое поведение объекта совпадает с действительным. 
+
+\begin{figure}
+	[H]
+	\centering
+	\includegraphics[width=350pt]{images/task3_y.png}
+	\caption{График выхода объекта при использовании регулятора с заданным расположением полюсов.}
+	\label{fig:task3_y}
+\end{figure}
+\begin{figure}
+	[H]
+	\centering
+	\includegraphics[width=350pt]{images/task3_u.png}
+	\caption{График выхода регулятора с заданным расположением полюсов.}
+	\label{fig:task3_u}
+\end{figure}
+
+
+
+\newpage
+\section{Выводы}
+В ходе выполнения работы ознакомились с методами синтеза классических регуляторов для дискретных систем. Теоретические выкладки, сделанные в соответствующей секции были подтверждены во время про ведения экспериментов, что можно наблюдать на графиках моделирования.
+
+
+\end{document}
